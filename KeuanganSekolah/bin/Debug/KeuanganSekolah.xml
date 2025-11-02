@@ -22,5 +22,15 @@ KeuanganSekolah
   resource lookups using this strongly typed resource class.
 </summary>
 </member>
+<member name="P:KeuanganSekolah.My.Resources.Resources.delete_forever_50dp_EA3323_FILL1_wght400_GRAD0_opsz48">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:KeuanganSekolah.My.Resources.Resources.edit_square_50dp_F19E39_FILL0_wght400_GRAD0_opsz48">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 </members>
 </doc>

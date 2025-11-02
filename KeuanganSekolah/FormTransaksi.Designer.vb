@@ -51,9 +51,9 @@ Partial Class FormTransaksi
         Me.GroupBox1.Controls.Add(Me.Label1)
         Me.GroupBox1.Dock = System.Windows.Forms.DockStyle.Top
         Me.GroupBox1.Location = New System.Drawing.Point(0, 0)
-        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Size = New System.Drawing.Size(1067, 207)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
@@ -62,7 +62,7 @@ Partial Class FormTransaksi
         'TextBox1
         '
         Me.TextBox1.Location = New System.Drawing.Point(208, 140)
-        Me.TextBox1.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.TextBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.ReadOnly = True
         Me.TextBox1.Size = New System.Drawing.Size(288, 22)
@@ -82,7 +82,7 @@ Partial Class FormTransaksi
         'txtNamaSiswa
         '
         Me.txtNamaSiswa.Location = New System.Drawing.Point(208, 87)
-        Me.txtNamaSiswa.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtNamaSiswa.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNamaSiswa.Name = "txtNamaSiswa"
         Me.txtNamaSiswa.ReadOnly = True
         Me.txtNamaSiswa.Size = New System.Drawing.Size(288, 22)
@@ -102,7 +102,7 @@ Partial Class FormTransaksi
         'btnCari
         '
         Me.btnCari.Location = New System.Drawing.Point(563, 86)
-        Me.btnCari.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.btnCari.Margin = New System.Windows.Forms.Padding(4)
         Me.btnCari.Name = "btnCari"
         Me.btnCari.Size = New System.Drawing.Size(100, 28)
         Me.btnCari.TabIndex = 2
@@ -112,7 +112,7 @@ Partial Class FormTransaksi
         'txtCariNISN
         '
         Me.txtCariNISN.Location = New System.Drawing.Point(208, 39)
-        Me.txtCariNISN.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.txtCariNISN.Margin = New System.Windows.Forms.Padding(4)
         Me.txtCariNISN.Name = "txtCariNISN"
         Me.txtCariNISN.Size = New System.Drawing.Size(288, 22)
         Me.txtCariNISN.TabIndex = 1
@@ -132,7 +132,7 @@ Partial Class FormTransaksi
         Me.panelKanan.Controls.Add(Me.GroupBox2)
         Me.panelKanan.Dock = System.Windows.Forms.DockStyle.Fill
         Me.panelKanan.Location = New System.Drawing.Point(0, 207)
-        Me.panelKanan.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.panelKanan.Margin = New System.Windows.Forms.Padding(4)
         Me.panelKanan.Name = "panelKanan"
         Me.panelKanan.Size = New System.Drawing.Size(1067, 347)
         Me.panelKanan.TabIndex = 3
@@ -143,9 +143,9 @@ Partial Class FormTransaksi
         Me.GroupBox2.Controls.Add(Me.dgvRiwayat)
         Me.GroupBox2.Dock = System.Windows.Forms.DockStyle.Fill
         Me.GroupBox2.Location = New System.Drawing.Point(0, 0)
-        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox2.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.GroupBox2.Padding = New System.Windows.Forms.Padding(4)
         Me.GroupBox2.Size = New System.Drawing.Size(1067, 347)
         Me.GroupBox2.TabIndex = 0
         Me.GroupBox2.TabStop = False
@@ -153,11 +153,12 @@ Partial Class FormTransaksi
         '
         'dgvRiwayat
         '
+        Me.dgvRiwayat.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvRiwayat.BackgroundColor = System.Drawing.Color.LightCyan
         Me.dgvRiwayat.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.dgvRiwayat.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvRiwayat.Location = New System.Drawing.Point(4, 19)
-        Me.dgvRiwayat.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.dgvRiwayat.Margin = New System.Windows.Forms.Padding(4)
         Me.dgvRiwayat.Name = "dgvRiwayat"
         Me.dgvRiwayat.ReadOnly = True
         Me.dgvRiwayat.RowHeadersWidth = 51
@@ -173,7 +174,7 @@ Partial Class FormTransaksi
         Me.Controls.Add(Me.panelKanan)
         Me.Controls.Add(Me.GroupBox1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Margin = New System.Windows.Forms.Padding(4, 4, 4, 4)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "FormTransaksi"
         Me.Text = "Transaksi Pembayaran Siswa"
         Me.GroupBox1.ResumeLayout(False)

@@ -3,7 +3,25 @@ Imports Org.BouncyCastle.Asn1
 Imports Org.BouncyCastle.Crypto.Engines.SM2Engine
 
 Public Class FormSiswa
-
+    Private Sub fillComboBoxTahunAjar()
+        ' Mengisi ComboBoxTahunAjar dengan data dari tabel kelas
+        Try
+            Dim sql As String = "SELECT DISTINCT tahunajar FROM kelas"
+            Using conn = DatabaseConnector.GetConnection()
+                Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sql, conn)
+                    conn.Open()
+                    Using rdr = cmd.ExecuteReader()
+                        ComboBoxTahunAjar.Items.Clear()
+                        While rdr.Read()
+                            ComboBoxTahunAjar.Items.Add(rdr("tahunajar").ToString())
+                        End While
+                    End Using
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Gagal memuat data kelas: " & ex.Message, "MySQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
     Private Sub insertNewKelasPerTahun(conn As MySqlConnection, tx As MySqlTransaction)
         Dim sqlInsertKelasPerTahun As String = "INSERT INTO kelas_per_tahun (nisn, idKelas) VALUES (@nisn, (SELECT idKelas FROM kelas WHERE namakelas = @namakelas AND tahunajar = @tahunajar))"
         Using cmdInsert = New MySql.Data.MySqlClient.MySqlCommand(sqlInsertKelasPerTahun, conn, tx)
@@ -153,7 +171,9 @@ Public Class FormSiswa
         ' Clear inputs
         TextBoxNISN.Text = ""
         TextBoxNama.Text = ""
-        ComboBoxTahunAjar.Text = ""
+        ComboBoxTahunAjar.Items.Clear()
+        ComboBoxKelas.Items.Clear()
+        fillComboBoxTahunAjar()
 
         ' Refresh grid
         LoadSiswa()
@@ -208,13 +228,13 @@ Public Class FormSiswa
                     Using rdr = cmd.ExecuteReader()
                         Dim dt As New DataTable()
                         dt.Load(rdr)
-                        'dt.Columns("nisn").ColumnName = "NISN"
-                        'dt.Columns("nama").ColumnName = "Nama Lengkap"
-                        'dt.Columns("namakelas").ColumnName = "Kelas"
-                        'dt.Columns("tahunajar").ColumnName = "Tahun Ajar"
 
                         dgvSiswa.DataSource = Nothing
                         dgvSiswa.DataSource = dt
+                        dgvSiswa.Columns("nisn").HeaderText = "NISN"
+                        dgvSiswa.Columns("nama").HeaderText = "Nama Lengkap"
+                        dgvSiswa.Columns("namakelas").HeaderText = "Kelas"
+                        dgvSiswa.Columns("tahunajar").HeaderText = "Tahun Ajar"
                     End Using
                 End Using
             End Using
@@ -223,33 +243,14 @@ Public Class FormSiswa
         End Try
     End Sub
 
-    Private Sub dgvSiswa_CellMouseDoubleClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles dgvSiswa.CellMouseDoubleClick
-        ' Isikan data siswa ke form input untuk diedit (kecuali nisn)
-        If e.RowIndex >= 0 Then
-            Dim selectedRow As DataGridViewRow = dgvSiswa.Rows(e.RowIndex)
-            TextBoxNISN.AcceptsReturn = False ' NISN tidak boleh diedit
-            TextBoxNISN.ReadOnly = True
-            TextBoxNISN.Text = selectedRow.Cells("nisn").Value.ToString()
-            TextBoxNama.Text = selectedRow.Cells("nama").Value.ToString()
-            ComboBoxTahunAjar.Text = selectedRow.Cells("kelas").Value.ToString()
-        End If
-        ' Fokus ke TextBoxNISN untuk memudahkan edit
-        TextBoxNama.Focus()
-
-        ' nyalakan tombol Edit, Hapus, dan Batal matikan Simpan
-        btnSimpan.Enabled = False
-        btnEdit.Enabled = True
-        btnHapus.Enabled = True
-        btnBatal.Enabled = True
-
-    End Sub
-
     Private Sub clearInputFields()
         ' Clear inputs
         TextBoxNISN.Text = ""
         TextBoxNISN.ReadOnly = False
         TextBoxNama.Text = ""
         ComboBoxTahunAjar.Text = ""
+        ComboBoxTahunAjar.Enabled = True
+        ComboBoxKelas.Items.Clear()
         btnSimpan.Enabled = True
         btnEdit.Enabled = False
         btnHapus.Enabled = False
@@ -258,19 +259,18 @@ Public Class FormSiswa
 
     Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
         ' Validasi input
-        If (TextBoxNama.Text.Equals("") Or ComboBoxTahunAjar.Text.Equals("")) Then
+        If (TextBoxNama.Text.Equals("")) Then
             MessageBox.Show("Setiap data siswa tidak boleh kosong.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Return
         End If
 
-        ' Update data siswa
+        ' Update database siswa
         Try
-            Dim sql As String = "UPDATE siswa SET nama = @nama, idKelas = @idKelas WHERE nisn = @nisn"
+            Dim sql As String = "UPDATE siswa SET nama = @nama WHERE nisn = @nisn"
             Using conn = DatabaseConnector.GetConnection()
                 Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sql, conn)
                     cmd.Parameters.AddWithValue("@nisn", TextBoxNISN.Text)
                     cmd.Parameters.AddWithValue("@nama", TextBoxNama.Text)
-                    cmd.Parameters.AddWithValue("@idKelas", ComboBoxTahunAjar.Text)
                     conn.Open()
                     cmd.ExecuteNonQuery()
                     MessageBox.Show("Data siswa berhasil diperbarui.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -280,6 +280,68 @@ Public Class FormSiswa
             MessageBox.Show("Gagal memperbarui data: " & ex.Message, "MySQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return
         End Try
+
+        ' Decrement jumlah siswa di tabel kelas lama dan increment di kelas baru jika ada perubahan
+        Try
+            Dim sqlDecrement As String = "UPDATE kelas SET jumlahsiswa = jumlahsiswa - 1 WHERE idKelas = (SELECT idKelas FROM kelas WHERE namakelas = @old_namakelas AND tahunajar = @old_tahunajar)"
+            Dim sqlIncrement As String = "UPDATE kelas SET jumlahsiswa = jumlahsiswa + 1 WHERE idKelas = (SELECT idKelas FROM kelas WHERE namakelas = @new_namakelas AND tahunajar = @new_tahunajar)"
+            ' Dapatkan data kelas lama
+            Dim old_namakelas As String = ""
+            Dim old_tahunajar As String = ""
+            Dim sqlGetOldKelas As String = "SELECT k.namakelas, k.tahunajar FROM kelas_per_tahun kp JOIN kelas k ON kp.idKelas = k.idKelas WHERE kp.nisn = @nisn"
+            Using conn = DatabaseConnector.GetConnection()
+                Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sqlGetOldKelas, conn)
+                    cmd.Parameters.AddWithValue("@nisn", TextBoxNISN.Text)
+                    conn.Open()
+                    Using rdr = cmd.ExecuteReader()
+                        If rdr.Read() Then
+                            old_namakelas = rdr("namakelas").ToString()
+                            old_tahunajar = rdr("tahunajar").ToString()
+                        End If
+                    End Using
+                End Using
+            End Using
+            ' Jika ada perubahan kelas atau tahun ajar, lakukan update jumlahsiswa
+            If old_namakelas <> ComboBoxKelas.Text Or old_tahunajar <> ComboBoxTahunAjar.Text Then
+                Using conn = DatabaseConnector.GetConnection()
+                    Using cmdDecrement = New MySql.Data.MySqlClient.MySqlCommand(sqlDecrement, conn)
+                        cmdDecrement.Parameters.AddWithValue("@old_namakelas", old_namakelas)
+                        cmdDecrement.Parameters.AddWithValue("@old_tahunajar", old_tahunajar)
+                        conn.Open()
+                        cmdDecrement.ExecuteNonQuery()
+                    End Using
+                    Using cmdIncrement = New MySql.Data.MySqlClient.MySqlCommand(sqlIncrement, conn)
+                        cmdIncrement.Parameters.AddWithValue("@new_namakelas", ComboBoxKelas.Text)
+                        cmdIncrement.Parameters.AddWithValue("@new_tahunajar", ComboBoxTahunAjar.Text)
+                        cmdIncrement.ExecuteNonQuery()
+                    End Using
+                End Using
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Gagal memperbarui jumlah siswa di kelas: " & ex.Message, "MySQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End Try
+
+        ' Update kelas_per_tahun jika kelas atau tahun ajar diubah
+        Try
+            Dim sqlUpdateKelasPerTahun As String = "UPDATE kelas_per_tahun SET idKelas = (SELECT idKelas FROM kelas WHERE namakelas = @namakelas AND tahunajar = @tahunajar) WHERE nisn = @nisn"
+            Using conn = DatabaseConnector.GetConnection()
+                Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sqlUpdateKelasPerTahun, conn)
+                    cmd.Parameters.AddWithValue("@nisn", TextBoxNISN.Text)
+                    cmd.Parameters.AddWithValue("@namakelas", ComboBoxKelas.Text)
+                    cmd.Parameters.AddWithValue("@tahunajar", ComboBoxTahunAjar.Text)
+                    conn.Open()
+                    cmd.ExecuteNonQuery()
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Gagal memperbarui kelas per tahun: " & ex.Message, "MySQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End Try
+
+        ' Reset ComboBoxTahunAjar
+        ComboBoxTahunAjar.Items.Clear()
+        fillComboBoxTahunAjar()
 
         ' Clear inputs
         clearInputFields()
@@ -295,29 +357,60 @@ Public Class FormSiswa
             Return
         End If
 
-        ' Hapus data siswa
         Try
-            Dim sql As String = "DELETE FROM siswa WHERE nisn = @nisn"
-            Using conn = DatabaseConnector.GetConnection()
-                Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("@nisn", TextBoxNISN.Text)
-                    conn.Open()
-                    cmd.ExecuteNonQuery()
-                    MessageBox.Show("Data siswa berhasil dihapus.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                End Using
-            End Using
-
             ' Decrement jumlah siswa di tabel kelas
-            Dim updateKelasSql As String = "UPDATE kelas SET jumlahsiswa = jumlahsiswa - 1 WHERE idKelas = @idKelas"
+            Dim updateKelasSql As String = "UPDATE kelas k SET jumlahsiswa = jumlahsiswa - 1 WHERE idKelas = (SELECT idKelas FROM kelas WHERE namakelas = @namakelas AND tahunajar = @tahunajar)"
             Using conn = DatabaseConnector.GetConnection()
                 Using cmd = New MySql.Data.MySqlClient.MySqlCommand(updateKelasSql, conn)
-                    cmd.Parameters.AddWithValue("@idKelas", ComboBoxTahunAjar.Text)
+                    cmd.Parameters.AddWithValue("@namakelas", dgvSiswa.CurrentRow.Cells("namakelas").Value.ToString)
+                    cmd.Parameters.AddWithValue("@tahunajar", dgvSiswa.CurrentRow.Cells("tahunajar").Value.ToString)
                     conn.Open()
                     cmd.ExecuteNonQuery()
                 End Using
             End Using
         Catch ex As Exception
+            MessageBox.Show("Gagal memperbarui jumlah siswa di kelas: " & ex.Message, "MySQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+        ' Hapus data kelas_per_tahun terlebih dahulu karena ada foreign key constraint
+        Try
+            Dim sql As String = "DELETE FROM kelas_per_tahun WHERE nisn = @nisn AND idKelas = (SELECT idKelas FROM kelas WHERE namakelas = @namakelas AND tahunajar = @tahunajar)"
+            Using conn = DatabaseConnector.GetConnection()
+                Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sql, conn)
+                    cmd.Parameters.AddWithValue("@nisn", TextBoxNISN.Text)
+                    cmd.Parameters.AddWithValue("@namakelas", dgvSiswa.CurrentRow.Cells("namakelas").Value.ToString)
+                    cmd.Parameters.AddWithValue("@tahunajar", dgvSiswa.CurrentRow.Cells("tahunajar").Value.ToString)
+                    conn.Open()
+                    cmd.ExecuteNonQuery()
+                End Using
+            End Using
+
+            MessageBox.Show("Data siswa berhasil dihapus.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Catch ex As Exception
             MessageBox.Show("Gagal menghapus data: " & ex.Message, "MySQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End Try
+
+        ' Jika kelas_per_tahun dengan nisn tersebut sudah tidak ada lagi, hapus juga data siswa
+        Try
+            Dim sqlCheck As String = "SELECT COUNT(*) FROM kelas_per_tahun WHERE nisn = @nisn"
+            Using conn = DatabaseConnector.GetConnection()
+                Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sqlCheck, conn)
+                    cmd.Parameters.AddWithValue("@nisn", TextBoxNISN.Text)
+                    conn.Open()
+                    Dim count As Integer = Convert.ToInt32(cmd.ExecuteScalar())
+                    If count = 0 Then
+                        ' Hapus data siswa
+                        Dim sqlDeleteSiswa As String = "DELETE FROM siswa WHERE nisn = @nisn"
+                        Using cmdDelete = New MySql.Data.MySqlClient.MySqlCommand(sqlDeleteSiswa, conn)
+                            cmdDelete.Parameters.AddWithValue("@nisn", TextBoxNISN.Text)
+                            cmdDelete.ExecuteNonQuery()
+                        End Using
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Gagal menghapus data siswa: " & ex.Message, "MySQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return
         End Try
 
@@ -329,6 +422,8 @@ Public Class FormSiswa
     End Sub
 
     Private Sub btnBatal_Click(sender As Object, e As EventArgs) Handles btnBatal.Click
+        fillComboBoxTahunAjar()
+
         ' Clear inputs
         clearInputFields()
     End Sub
@@ -360,5 +455,39 @@ Public Class FormSiswa
         Catch ex As Exception
             MessageBox.Show("Gagal memuat data kelas: " & ex.Message, "MySQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+    End Sub
+
+    Private Sub dgvSiswa_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvSiswa.CellContentClick
+
+        Dim selectedRow As DataGridViewRow = dgvSiswa.Rows(e.RowIndex)
+        If dgvSiswa.Columns(e.ColumnIndex).Name = "dgvBtnEdit" Then
+            ' Isikan data siswa ke form input untuk diedit (kecuali nisn)
+            If e.RowIndex >= 0 Then
+                TextBoxNISN.AcceptsReturn = False ' NISN tidak boleh diedit
+                TextBoxNISN.ReadOnly = True
+                ComboBoxTahunAjar.Enabled = False ' Tahun Ajar tidak boleh diedit
+                TextBoxNISN.Text = selectedRow.Cells("nisn").Value.ToString()
+                TextBoxNama.Text = selectedRow.Cells("nama").Value.ToString()
+                ComboBoxTahunAjar.Text = selectedRow.Cells("tahunajar").Value.ToString()
+                ComboBoxKelas.Text = selectedRow.Cells("namakelas").Value.ToString()
+            End If
+            ' Fokus ke TextBoxNISN untuk memudahkan edit
+            TextBoxNama.Focus()
+
+            ' nyalakan tombol Edit, Hapus, dan Batal matikan Simpan
+            btnSimpan.Enabled = False
+            btnEdit.Enabled = True
+            btnHapus.Enabled = True
+            btnBatal.Enabled = True
+        ElseIf dgvSiswa.Columns(e.ColumnIndex).Name = "dgvBtnHapus" Then
+            ' Hapus data siswa
+            If e.RowIndex >= 0 Then
+                TextBoxNISN.Text = selectedRow.Cells("nisn").Value.ToString()
+                btnHapus.Enabled = True
+                btnHapus.PerformClick()
+                btnHapus.Enabled = False
+            End If
+        End If
+
     End Sub
 End Class

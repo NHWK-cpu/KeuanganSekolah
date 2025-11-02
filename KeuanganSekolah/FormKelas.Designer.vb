@@ -32,6 +32,7 @@ Partial Class FormKelas
         Me.btnEdit = New System.Windows.Forms.Button()
         Me.btnSimpan = New System.Windows.Forms.Button()
         Me.dgvKelas = New System.Windows.Forms.DataGridView()
+        Me.edit = New System.Windows.Forms.DataGridViewImageColumn()
         Me.GroupBox1.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.dgvKelas, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -150,6 +151,7 @@ Partial Class FormKelas
         Me.dgvKelas.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvKelas.BackgroundColor = System.Drawing.Color.LightCyan
         Me.dgvKelas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvKelas.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.edit})
         Me.dgvKelas.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvKelas.Location = New System.Drawing.Point(0, 187)
         Me.dgvKelas.Margin = New System.Windows.Forms.Padding(4)
@@ -159,6 +161,18 @@ Partial Class FormKelas
         Me.dgvKelas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvKelas.Size = New System.Drawing.Size(1067, 367)
         Me.dgvKelas.TabIndex = 1
+        '
+        'edit
+        '
+        Me.edit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.edit.HeaderText = "Edit"
+        Me.edit.Image = Global.KeuanganSekolah.My.Resources.Resources.edit_square_50dp_F19E39_FILL0_wght400_GRAD0_opsz48
+        Me.edit.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom
+        Me.edit.MinimumWidth = 6
+        Me.edit.Name = "edit"
+        Me.edit.ReadOnly = True
+        Me.edit.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.edit.Width = 50
         '
         'FormKelas
         '
@@ -191,4 +205,5 @@ Partial Class FormKelas
     Friend WithEvents btnBatal As Button
     Friend WithEvents TahunAjar As Label
     Friend WithEvents cmbTahunAjar As ComboBox
+    Friend WithEvents edit As DataGridViewImageColumn
 End Class

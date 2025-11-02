@@ -39,6 +39,10 @@ Partial Class FormSiswa
         Me.btnEdit = New System.Windows.Forms.Button()
         Me.btnSimpan = New System.Windows.Forms.Button()
         Me.dgvSiswa = New System.Windows.Forms.DataGridView()
+        Me.DataGridViewImageColumn1 = New System.Windows.Forms.DataGridViewImageColumn()
+        Me.DataGridViewImageColumn2 = New System.Windows.Forms.DataGridViewImageColumn()
+        Me.dgvBtnEdit = New System.Windows.Forms.DataGridViewImageColumn()
+        Me.dgvBtnHapus = New System.Windows.Forms.DataGridViewImageColumn()
         Me.GroupBox1.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.dgvSiswa, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -230,6 +234,7 @@ Partial Class FormSiswa
         Me.dgvSiswa.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvSiswa.BackgroundColor = System.Drawing.Color.LightCyan
         Me.dgvSiswa.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvSiswa.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.dgvBtnEdit, Me.dgvBtnHapus})
         Me.dgvSiswa.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvSiswa.Location = New System.Drawing.Point(0, 243)
         Me.dgvSiswa.Margin = New System.Windows.Forms.Padding(4)
@@ -239,6 +244,54 @@ Partial Class FormSiswa
         Me.dgvSiswa.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvSiswa.Size = New System.Drawing.Size(1067, 311)
         Me.dgvSiswa.TabIndex = 1
+        '
+        'DataGridViewImageColumn1
+        '
+        Me.DataGridViewImageColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader
+        Me.DataGridViewImageColumn1.HeaderText = "Edit"
+        Me.DataGridViewImageColumn1.Image = Global.KeuanganSekolah.My.Resources.Resources.edit_square_50dp_F19E39_FILL0_wght400_GRAD0_opsz48
+        Me.DataGridViewImageColumn1.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom
+        Me.DataGridViewImageColumn1.MinimumWidth = 6
+        Me.DataGridViewImageColumn1.Name = "DataGridViewImageColumn1"
+        Me.DataGridViewImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridViewImageColumn1.Width = 125
+        '
+        'DataGridViewImageColumn2
+        '
+        Me.DataGridViewImageColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader
+        Me.DataGridViewImageColumn2.HeaderText = "Hapus"
+        Me.DataGridViewImageColumn2.Image = Global.KeuanganSekolah.My.Resources.Resources.delete_forever_50dp_EA3323_FILL1_wght400_GRAD0_opsz48
+        Me.DataGridViewImageColumn2.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom
+        Me.DataGridViewImageColumn2.MinimumWidth = 6
+        Me.DataGridViewImageColumn2.Name = "DataGridViewImageColumn2"
+        Me.DataGridViewImageColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridViewImageColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.DataGridViewImageColumn2.Width = 125
+        '
+        'dgvBtnEdit
+        '
+        Me.dgvBtnEdit.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader
+        Me.dgvBtnEdit.HeaderText = "Edit"
+        Me.dgvBtnEdit.Image = Global.KeuanganSekolah.My.Resources.Resources.edit_square_50dp_F19E39_FILL0_wght400_GRAD0_opsz48
+        Me.dgvBtnEdit.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom
+        Me.dgvBtnEdit.MinimumWidth = 6
+        Me.dgvBtnEdit.Name = "dgvBtnEdit"
+        Me.dgvBtnEdit.ReadOnly = True
+        Me.dgvBtnEdit.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvBtnEdit.Width = 36
+        '
+        'dgvBtnHapus
+        '
+        Me.dgvBtnHapus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader
+        Me.dgvBtnHapus.HeaderText = "Hapus"
+        Me.dgvBtnHapus.Image = Global.KeuanganSekolah.My.Resources.Resources.delete_forever_50dp_EA3323_FILL1_wght400_GRAD0_opsz48
+        Me.dgvBtnHapus.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom
+        Me.dgvBtnHapus.MinimumWidth = 6
+        Me.dgvBtnHapus.Name = "dgvBtnHapus"
+        Me.dgvBtnHapus.ReadOnly = True
+        Me.dgvBtnHapus.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.dgvBtnHapus.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.dgvBtnHapus.Width = 76
         '
         'FormSiswa
         '
@@ -276,4 +329,8 @@ Partial Class FormSiswa
     Friend WithEvents Panel1 As Panel
     Friend WithEvents ComboBoxKelas As ComboBox
     Friend WithEvents lblKelas As Label
+    Friend WithEvents DataGridViewImageColumn1 As DataGridViewImageColumn
+    Friend WithEvents DataGridViewImageColumn2 As DataGridViewImageColumn
+    Friend WithEvents dgvBtnEdit As DataGridViewImageColumn
+    Friend WithEvents dgvBtnHapus As DataGridViewImageColumn
 End Class

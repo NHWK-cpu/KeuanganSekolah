@@ -276,6 +276,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\edit_square_50dp_F19E39_FILL0_wght400_GRAD0_opsz48.png" />
+    <None Include="Resources\delete_forever_50dp_EA3323_FILL1_wght400_GRAD0_opsz48.png" />
     <Content Include="SqlServerTypes\Loader.cs" />
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="SqlServerTypes\x64\msvcr120.dll">

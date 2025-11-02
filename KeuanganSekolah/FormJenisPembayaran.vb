@@ -27,7 +27,7 @@ Public Class FormJenisPembayaran
 
     Private Sub LoadJenisPembayaran()
         Try
-            Dim sql As String = "SELECT kode_jenis_pembayaran, nama_pembayaran, nominal FROM jenis_pembayaran ORDER BY nama_pembayaran"
+            Dim sql As String = "SELECT kode_jenis_pembayaran, nama_pembayaran, tahunajar, nominal FROM jenis_pembayaran ORDER BY nama_pembayaran"
             Using conn = DatabaseConnector.GetConnection()
                 Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sql, conn)
                     conn.Open()
@@ -35,12 +35,12 @@ Public Class FormJenisPembayaran
                         Dim dt As New DataTable()
                         dt.Load(rdr)
 
-                        dt.Columns("kode_jenis_pembayaran").ColumnName = "Kode Jenis Pembayaran"
-                        dt.Columns("nama_pembayaran").ColumnName = "Nama Pembayaran"
-                        dt.Columns("nominal").ColumnName = "Nominal"
-
                         dgvJenisPembayaran.DataSource = Nothing
                         dgvJenisPembayaran.DataSource = dt
+                        dgvJenisPembayaran.Columns("kode_jenis_pembayaran").HeaderText = "Kode Jenis Pembayaran"
+                        dgvJenisPembayaran.Columns("nama_pembayaran").HeaderText = "Nama Pembayaran"
+                        dgvJenisPembayaran.Columns("tahunajar").HeaderText = "Tahun Ajar"
+                        dgvJenisPembayaran.Columns("nominal").HeaderText = "Nominal"
                     End Using
                 End Using
             End Using
@@ -201,23 +201,6 @@ Public Class FormJenisPembayaran
         LoadJenisPembayaran()
     End Sub
 
-    Private Sub dgvJenisPembayaran_CellMouseDoubleClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles dgvJenisPembayaran.CellMouseDoubleClick
-        ' Masukkan data ke TextBox untuk diedit
-        If e.RowIndex < 0 OrElse e.RowIndex >= dgvJenisPembayaran.Rows.Count Then
-            Return
-        End If
-        Dim selectedRow As DataGridViewRow = dgvJenisPembayaran.Rows(e.RowIndex)
-        txtNamaPembayaran.Text = selectedRow.Cells("Nama Pembayaran").Value.ToString()
-        numNominal.Value = Convert.ToDecimal(selectedRow.Cells("Nominal").Value)
-
-        ' Aktifkan tombol Edit, Hapus, dan Batal. nonaktifkan Simpan
-        btnSimpan.Enabled = False
-        btnEdit.Enabled = True
-        btnHapus.Enabled = True
-        btnBatal.Enabled = True
-        txtNamaPembayaran.Focus()
-    End Sub
-
     Private Sub btnEdit_Click(sender As Object, e As EventArgs) Handles btnEdit.Click
         ' Validasi input
         If String.IsNullOrWhiteSpace(txtNamaPembayaran.Text) Then
@@ -291,6 +274,60 @@ Public Class FormJenisPembayaran
         btnHapus.Enabled = False
         btnBatal.Enabled = False
         txtNamaPembayaran.Clear()
+        txtNamaPembayaran.Enabled = True
+        ComboBoxTahunAjar.Enabled = True
+        numNominal.Enabled = True
         numNominal.Value = 0
+    End Sub
+
+    Private Sub dgvJenisPembayaran_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvJenisPembayaran.CellContentClick
+        ' validasi
+        If e.RowIndex < 0 OrElse e.RowIndex >= dgvJenisPembayaran.Rows.Count Then
+            Return
+        ElseIf dgvJenisPembayaran.Rows(e.RowIndex).Cells("nama_pembayaran").Value.ToString.Equals("SPP") Then
+            MessageBox.Show("Jenis Pembayaran SPP hanya dapat dihapus dan tidak dapat diedit melalui tabel ini.", "Aksi Tidak Diizinkan", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            txtNamaPembayaran.Enabled = False
+            ComboBoxTahunAjar.Enabled = False
+            numNominal.Enabled = False
+        End If
+
+        Dim selectedRow As DataGridViewRow = dgvJenisPembayaran.Rows(e.RowIndex)
+        If dgvJenisPembayaran.Columns(e.ColumnIndex).Name = "edit" Then
+            ' Masukkan data ke TextBox untuk diedit
+            txtNamaPembayaran.Text = selectedRow.Cells("nama_pembayaran").Value.ToString()
+            numNominal.Value = Convert.ToDecimal(selectedRow.Cells("nominal").Value)
+            ComboBoxTahunAjar.Text = selectedRow.Cells("tahunajar").Value.ToString()
+            ComboBoxTahunAjar.Enabled = False
+
+            ' Nonaktifkan nominal jika ada data pada tabel transaksi yang menggunakan jenis pembayaran ini
+            Dim kode As String = selectedRow.Cells("kode_jenis_pembayaran").Value.ToString()
+            Try
+                Dim sqlCheck As String = "SELECT COUNT(1) FROM transaksi WHERE kode_jenis_pembayaran = @kode_jenis_pembayaran"
+                Using conn = DatabaseConnector.GetConnection()
+                    Using cmdCheck = New MySql.Data.MySqlClient.MySqlCommand(sqlCheck, conn)
+                        cmdCheck.Parameters.AddWithValue("@kode_jenis_pembayaran", kode)
+                        conn.Open()
+                        Dim count = Convert.ToInt32(cmdCheck.ExecuteScalar())
+                        If count > 0 Then
+                            numNominal.Enabled = False
+                            MessageBox.Show("Nominal tidak dapat diubah karena sudah ada transaksi yang menggunakan jenis pembayaran ini.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        Else
+                            numNominal.Enabled = True
+                        End If
+                    End Using
+                End Using
+            Catch ex As Exception
+                ' On error, keep nominal enabled and consider logging the exception
+                MessageBox.Show("Gagal memeriksa transaksi terkait: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                numNominal.Enabled = True
+            End Try
+
+            ' Aktifkan tombol Edit, Hapus, dan Batal. nonaktifkan Simpan
+            btnSimpan.Enabled = False
+            btnEdit.Enabled = True
+            btnHapus.Enabled = True
+            btnBatal.Enabled = True
+            txtNamaPembayaran.Focus()
+        End If
     End Sub
 End Class
