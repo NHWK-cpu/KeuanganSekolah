@@ -33,6 +33,7 @@ Partial Class FormTransaksi
         Me.panelKanan = New System.Windows.Forms.Panel()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
         Me.dgvRiwayat = New System.Windows.Forms.DataGridView()
+        Me.bayar = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.GroupBox1.SuspendLayout()
         Me.panelKanan.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -64,7 +65,6 @@ Partial Class FormTransaksi
         Me.TextBox1.Location = New System.Drawing.Point(208, 140)
         Me.TextBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.ReadOnly = True
         Me.TextBox1.Size = New System.Drawing.Size(288, 22)
         Me.TextBox1.TabIndex = 6
         Me.TextBox1.TabStop = False
@@ -84,7 +84,6 @@ Partial Class FormTransaksi
         Me.txtNamaSiswa.Location = New System.Drawing.Point(208, 87)
         Me.txtNamaSiswa.Margin = New System.Windows.Forms.Padding(4)
         Me.txtNamaSiswa.Name = "txtNamaSiswa"
-        Me.txtNamaSiswa.ReadOnly = True
         Me.txtNamaSiswa.Size = New System.Drawing.Size(288, 22)
         Me.txtNamaSiswa.TabIndex = 4
         Me.txtNamaSiswa.TabStop = False
@@ -156,6 +155,7 @@ Partial Class FormTransaksi
         Me.dgvRiwayat.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.dgvRiwayat.BackgroundColor = System.Drawing.Color.LightCyan
         Me.dgvRiwayat.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvRiwayat.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.bayar})
         Me.dgvRiwayat.Dock = System.Windows.Forms.DockStyle.Fill
         Me.dgvRiwayat.Location = New System.Drawing.Point(4, 19)
         Me.dgvRiwayat.Margin = New System.Windows.Forms.Padding(4)
@@ -165,6 +165,17 @@ Partial Class FormTransaksi
         Me.dgvRiwayat.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvRiwayat.Size = New System.Drawing.Size(1059, 324)
         Me.dgvRiwayat.TabIndex = 0
+        '
+        'bayar
+        '
+        Me.bayar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.bayar.HeaderText = "Bayar"
+        Me.bayar.MinimumWidth = 6
+        Me.bayar.Name = "bayar"
+        Me.bayar.ReadOnly = True
+        Me.bayar.Text = "bayar"
+        Me.bayar.ToolTipText = "bayar"
+        Me.bayar.Width = 55
         '
         'FormTransaksi
         '
@@ -197,4 +208,5 @@ Partial Class FormTransaksi
     Friend WithEvents panelKanan As Panel
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents dgvRiwayat As DataGridView
+    Friend WithEvents bayar As DataGridViewButtonColumn
 End Class

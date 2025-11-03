@@ -2,7 +2,7 @@
 
     Private Sub LoadDataTagihan()
         Try
-            Dim sql As String = "SELECT periode, status, kode_jenis_pembayaran, kode_tagihan FROM tagihan WHERE nisn = @nisn ORDER BY nisn, periode"
+            Dim sql As String = "SELECT j.nama_pembayaran, t.periode, t.status, t.kode_jenis_pembayaran, t.kode_tagihan FROM tagihan t JOIN jenis_pembayaran j ON j.kode_jenis_pembayaran = t.kode_jenis_pembayaran WHERE t.nisn = @nisn ORDER BY t.nisn, t.periode"
             Using conn = DatabaseConnector.GetConnection()
                 Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sql, conn)
                     cmd.Parameters.AddWithValue("@nisn", txtCariNISN.Text.Trim())
@@ -26,30 +26,57 @@
         LoadDataTagihan()
     End Sub
 
-    'Private Sub dgvRiwayat_CellMouseDoubleClick(sender As Object, e As DataGridViewCellMouseEventArgs) Handles dgvRiwayat.CellMouseDoubleClick
-    '    ' Masukkan data ke Combobox untuk diproses pembayaran
-    '    If e.RowIndex < 0 OrElse e.RowIndex >= dgvRiwayat.Rows.Count Then
-    '        Return
-    '    End If
-    '    Dim selectedRow As DataGridViewRow = dgvRiwayat.Rows(e.RowIndex)
+    Private Sub dgvRiwayat_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvRiwayat.CellContentClick
+        ' Validasi klik pada header atau di luar baris
+        If e.RowIndex < 0 OrElse e.RowIndex >= dgvRiwayat.Rows.Count Then
+            Return
+        End If
 
-    '    ' Ambil data dari jenis_pembayaran berdasarkan kode_jenis_pembayaran
-    '    Dim sql As String = "SELECT nama_pembayaran, Nominal FROM jenis_pembayaran WHERE kode_jenis_pembayaran = @kode_jenis_pembayaran"
-    '    Using conn = DatabaseConnector.GetConnection()
-    '        Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sql, conn)
-    '            ' Ambil kode_jenis_pembayaran dari baris yang dipilih di DataGridView
-    '            cmd.Parameters.AddWithValue("@kode_jenis_pembayaran", selectedRow.Cells("kode_jenis_pembayaran").Value.ToString())
-    '            conn.Open()
-    '            Using rdr = cmd.ExecuteReader()
-    '                If rdr.Read() Then
-    '                    cmbJenisPembayaran.Text = rdr("nama_pembayaran").ToString()
-    '                    numNominal.Value = Convert.ToDecimal(rdr("Nominal"))
-    '                End If
-    '            End Using
-    '        End Using
-    '    End Using
+        Dim selectedRow As DataGridViewRow = dgvRiwayat.Rows(e.RowIndex)
+        ' Lakukan sesuatu ketika user mengklik sel button bayar di DataGridView
+        If dgvRiwayat.Columns(e.ColumnIndex).Name = "bayar" Then
+            ' Ambil data dari jenis_pembayaran berdasarkan kode_jenis_pembayaran
+            Dim kode_tagihan As String = selectedRow.Cells("kode_tagihan").Value.ToString()
+            Dim NamaTagihan As String = selectedRow.Cells("nama_pembayaran").Value.ToString()
+            Dim periode As String = selectedRow.Cells("periode").Value.ToString()
+            Dim nominal As Decimal
+            Dim namasiswa As String = ""
+            Dim operator_name As String = LoginSession.Username
+            Dim status As String = selectedRow.Cells("status").Value.ToString()
+            Dim nominalTerbayar As Decimal = 0D
 
-    'End Sub
+            ' mengisi data untuk ditampilkan di form aksi transaksi
+            Dim sql As String = "SELECT jp.nominal, s.nama, t.nominal_terbayar FROM tagihan t JOIN jenis_pembayaran jp ON jp.kode_jenis_pembayaran = t.kode_jenis_pembayaran JOIN siswa s ON s.nisn = t.nisn WHERE t.kode_tagihan = @kode_tagihan"
+            Using conn = DatabaseConnector.GetConnection()
+                Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sql, conn)
+                    ' Ambil kode_jenis_pembayaran dari baris yang dipilih di DataGridView
+                    cmd.Parameters.AddWithValue("@kode_tagihan", kode_tagihan)
+                    conn.Open()
+                    Using rdr = cmd.ExecuteReader()
+                        If rdr.Read() Then
+                            nominal = Convert.ToDecimal(rdr("nominal"))
+                            namasiswa = rdr("nama").ToString()
+                            nominalTerbayar = Convert.ToDecimal(rdr("nominal_terbayar"))
+                        End If
+                    End Using
+                End Using
+            End Using
+
+            ' Menampilkan form aksi transaksi
+            Dim fAksiTransaksi As New FormAksiTransaksivb(kode_tagihan, NamaTagihan, periode, nominal, namasiswa, operator_name, status, nominalTerbayar)
+            Dim result As DialogResult = fAksiTransaksi.ShowDialog(FormMenuUtama)
+
+            If result = DialogResult.OK Then
+                ' Form ditutup dengan tombol Simpan
+                MessageBox.Show("Transaksi berhasil disimpan.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Else
+                ' Form dibatalkan atau ditutup tanpa simpan
+                MessageBox.Show("Transaksi dibatalkan.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
+            ' Lakukan refresh DataGridView
+            LoadDataTagihan()
+        End If
+    End Sub
 
     'Private Sub btnSimpanPembayaran_Click(sender As Object, e As EventArgs)
     '    ' Validasi input

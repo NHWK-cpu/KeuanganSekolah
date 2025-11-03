@@ -136,7 +136,7 @@ Public Class FormSiswa
                 If jenisPembayaranNama.Equals("SPP") Then
                     For month As Integer = 1 To 12
                         Dim periode As String = ComboBoxTahunAjar.Text & "-" & month.ToString("D2")
-                        Dim sqlInsertSppTagihan As String = "INSERT INTO tagihan (kode_tagihan, nisn, periode, status, kode_jenis_pembayaran) VALUES (@kode_tagihan, @nisn, @periode, 'Belum Lunas', @kode_jenis_pembayaran)"
+                        Dim sqlInsertSppTagihan As String = "INSERT INTO tagihan (kode_tagihan, nisn, periode, status, kode_jenis_pembayaran) VALUES (@kode_tagihan, @nisn, @periode, 'Belum Terbayar', @kode_jenis_pembayaran)"
                         Using conn = DatabaseConnector.GetConnection()
                             Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sqlInsertSppTagihan, conn)
                                 cmd.Parameters.AddWithValue("@kode_tagihan", TextBoxNISN.Text & "_" & periode & "_" & jenisPembayaranId)
@@ -151,7 +151,7 @@ Public Class FormSiswa
                     Continue For
                 End If
 
-                Dim sqlInsertSiswaTagihan As String = "INSERT INTO tagihan (kode_tagihan, nisn, periode, status, kode_jenis_pembayaran) VALUES (@kode_tagihan, @nisn, @periode, 'Belum Lunas', @kode_jenis_pembayaran)"
+                Dim sqlInsertSiswaTagihan As String = "INSERT INTO tagihan (kode_tagihan, nisn, periode, status, kode_jenis_pembayaran) VALUES (@kode_tagihan, @nisn, @periode, 'Belum Terbayar', @kode_jenis_pembayaran)"
                 Using conn = DatabaseConnector.GetConnection()
                     Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sqlInsertSiswaTagihan, conn)
                         cmd.Parameters.AddWithValue("@kode_tagihan", TextBoxNISN.Text & "_" & ComboBoxTahunAjar.Text & "_" & jenisPembayaranId)
@@ -391,6 +391,57 @@ Public Class FormSiswa
             Return
         End Try
 
+        ' Hapus semua transaksi terkait siswa tersebut
+        Try
+            Dim sqlDeleteTransaksi As String = "DELETE t FROM transaksi t JOIN tagihan tg ON t.kode_tagihan = tg.kode_tagihan WHERE tg.nisn = @nisn"
+            Using conn = DatabaseConnector.GetConnection()
+                Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sqlDeleteTransaksi, conn)
+                    cmd.Parameters.AddWithValue("@nisn", TextBoxNISN.Text)
+                    conn.Open()
+                    cmd.ExecuteNonQuery()
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Gagal menghapus data transaksi siswa: " & ex.Message, "MySQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End Try
+
+        ' Hapus semua tagihan terkait siswa tersebut
+        Dim kodeJenisPembayaranList As New List(Of String)()
+        Try
+            Dim sqlSelectKodeJenisPembayaran As String = "SELECT kode_jenis_pembayaran FROM jenis_pembayaran WHERE tahunajar = @tahunajar"
+            Using conn = DatabaseConnector.GetConnection()
+                Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sqlSelectKodeJenisPembayaran, conn)
+                    cmd.Parameters.AddWithValue("@tahunajar", dgvSiswa.CurrentRow.Cells("tahunajar").Value.ToString)
+                    conn.Open()
+                    Using rdr = cmd.ExecuteReader()
+                        While rdr.Read()
+                            kodeJenisPembayaranList.Add(rdr("kode_jenis_pembayaran").ToString())
+                        End While
+                    End Using
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Gagal mengambil kode jenis pembayaran: " & ex.Message, "MySQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+        For Each kodeJenisPembayaran As String In kodeJenisPembayaranList
+            Try
+                Dim sqlDeleteTagihan As String = "DELETE FROM tagihan WHERE nisn = @nisn AND kode_jenis_pembayaran = @kode_jenis_pembayaran"
+                Using conn = DatabaseConnector.GetConnection()
+                    Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sqlDeleteTagihan, conn)
+                        cmd.Parameters.AddWithValue("@nisn", TextBoxNISN.Text)
+                        cmd.Parameters.AddWithValue("@kode_jenis_pembayaran", kodeJenisPembayaran)
+                        conn.Open()
+                        cmd.ExecuteNonQuery()
+                    End Using
+                End Using
+            Catch ex As Exception
+                MessageBox.Show("Gagal menghapus data tagihan siswa: " & ex.Message, "MySQL Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Return
+            End Try
+        Next
+
+
         ' Jika kelas_per_tahun dengan nisn tersebut sudah tidak ada lagi, hapus juga data siswa
         Try
             Dim sqlCheck As String = "SELECT COUNT(*) FROM kelas_per_tahun WHERE nisn = @nisn"
@@ -458,7 +509,9 @@ Public Class FormSiswa
     End Sub
 
     Private Sub dgvSiswa_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles dgvSiswa.CellContentClick
-
+        If e.RowIndex < 0 Then
+            Return
+        End If
         Dim selectedRow As DataGridViewRow = dgvSiswa.Rows(e.RowIndex)
         If dgvSiswa.Columns(e.ColumnIndex).Name = "dgvBtnEdit" Then
             ' Isikan data siswa ke form input untuk diedit (kecuali nisn)

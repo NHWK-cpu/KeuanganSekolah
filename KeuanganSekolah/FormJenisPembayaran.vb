@@ -107,7 +107,7 @@ Public Class FormJenisPembayaran
     Private Sub buatTagihanBiasa(kode As String, nisn As String)
         Try
             Using conn = DatabaseConnector.GetConnection()
-                Using cmdInsertTagihan = New MySql.Data.MySqlClient.MySqlCommand("INSERT INTO tagihan (kode_tagihan, nisn, periode, status, kode_jenis_pembayaran) VALUES (@kodetagihan, @nisn, @periode, 'belum bayar', @kode_jenis_pembayaran)", conn)
+                Using cmdInsertTagihan = New MySql.Data.MySqlClient.MySqlCommand("INSERT INTO tagihan (kode_tagihan, nisn, periode, status, kode_jenis_pembayaran) VALUES (@kodetagihan, @nisn, @periode, 'Belum Terbayar', @kode_jenis_pembayaran)", conn)
                     conn.Open()
                     cmdInsertTagihan.Parameters.AddWithValue("@kodetagihan", nisn & "_" & ComboBoxTahunAjar.Text & "_" & kode)
                     cmdInsertTagihan.Parameters.AddWithValue("@nisn", nisn)
@@ -208,14 +208,33 @@ Public Class FormJenisPembayaran
             Return
         End If
 
-        ' Update data di database
+        ' Update data di database transaksi untuk semua transaksi yang menggunakan jenis pembayaran ini (kode_jenis_pembayaran nya nya sama)
+        Try
+            Dim sqlUpdateTransaksi As String = "UPDATE transaksi SET nama_pembayaran = @nama_pembayaran, nominal = @nominal WHERE kode_jenis_pembayaran = @kode_jenis_pembayaran"
+            Using conn = DatabaseConnector.GetConnection()
+                Using cmdUpdateTransaksi = New MySql.Data.MySqlClient.MySqlCommand(sqlUpdateTransaksi, conn)
+                    ' Gunakan nilai kode dari DataGridView untuk WHERE clause
+                    Dim selectedRow As DataGridViewRow = dgvJenisPembayaran.SelectedRows(0)
+                    Dim kode As String = selectedRow.Cells("kode_jenis_pembayaran").Value.ToString()
+                    cmdUpdateTransaksi.Parameters.AddWithValue("@nama_pembayaran", txtNamaPembayaran.Text)
+                    cmdUpdateTransaksi.Parameters.AddWithValue("@nominal", Convert.ToDecimal(numNominal.Value))
+                    cmdUpdateTransaksi.Parameters.AddWithValue("@kode_jenis_pembayaran", kode)
+                    conn.Open()
+                    cmdUpdateTransaksi.ExecuteNonQuery()
+                End Using
+            End Using
+        Catch ex As Exception
+
+        End Try
+
+        ' Update data di database jenis_pembayaran
         Try
             Dim sql As String = "UPDATE jenis_pembayaran SET nama_pembayaran = @nama_pembayaran, nominal = @nominal WHERE kode_jenis_pembayaran = @kode_jenis_pembayaran"
             Using conn = DatabaseConnector.GetConnection()
                 Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sql, conn)
                     ' Gunakan nilai kode dari DataGridView untuk WHERE clause
                     Dim selectedRow As DataGridViewRow = dgvJenisPembayaran.SelectedRows(0)
-                    Dim kode As String = selectedRow.Cells("Kode Jenis Pembayaran").Value.ToString()
+                    Dim kode As String = selectedRow.Cells("kode_jenis_pembayaran").Value.ToString()
                     cmd.Parameters.AddWithValue("@nama_pembayaran", txtNamaPembayaran.Text)
                     cmd.Parameters.AddWithValue("@nominal", Convert.ToDecimal(numNominal.Value))
                     cmd.Parameters.AddWithValue("@kode_jenis_pembayaran", kode)
@@ -235,6 +254,27 @@ Public Class FormJenisPembayaran
     End Sub
 
     Private Sub btnHapus_Click(sender As Object, e As EventArgs) Handles btnHapus.Click
+        ' Jika ada data transaksi pada tabel transaksi yang menggunakan jenis pembayaran ini, tampilkan pesan error dan batalkan penghapusan
+        Try
+            Dim sqlCheck As String = "SELECT COUNT(1) FROM transaksi WHERE kode_jenis_pembayaran = @kode_jenis_pembayaran"
+            Using conn = DatabaseConnector.GetConnection()
+                Using cmdCheck = New MySql.Data.MySqlClient.MySqlCommand(sqlCheck, conn)
+                    ' Gunakan nilai kode dari DataGridView untuk WHERE clause
+                    Dim selectedRow As DataGridViewRow = dgvJenisPembayaran.SelectedRows(0)
+                    Dim kode As String = selectedRow.Cells("kode_jenis_pembayaran").Value.ToString()
+                    cmdCheck.Parameters.AddWithValue("@kode_jenis_pembayaran", kode)
+                    conn.Open()
+                    Dim count = Convert.ToInt32(cmdCheck.ExecuteScalar())
+                    If count > 0 Then
+                        MessageBox.Show("Jenis Pembayaran ini tidak dapat dihapus karena sudah ada transaksi yang menggunakan jenis pembayaran ini.", "Aksi Tidak Diizinkan", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                        Return
+                    End If
+                End Using
+            End Using
+        Catch ex As Exception
+            MessageBox.Show("Gagal memeriksa transaksi terkait: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return
+        End Try
 
         ' Konfirmasi penghapusan
         Dim result = MessageBox.Show("Apakah Anda yakin ingin menghapus data Jenis Pembayaran ini?", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Question)

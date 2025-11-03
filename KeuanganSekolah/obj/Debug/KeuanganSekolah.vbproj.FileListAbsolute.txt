@@ -353,3 +353,5 @@ C:\Project\Visual\keuangan sekolah_2\KeuanganSekolah\KeuanganSekolah\bin\Debug\r
 C:\Project\Visual\keuangan sekolah_2\KeuanganSekolah\KeuanganSekolah\bin\Debug\zh-CHS\Microsoft.ReportViewer.WinForms.resources.dll
 C:\Project\Visual\keuangan sekolah_2\KeuanganSekolah\KeuanganSekolah\bin\Debug\zh-CHT\Microsoft.ReportViewer.WinForms.resources.dll
 C:\Project\Visual\keuangan sekolah_2\KeuanganSekolah\KeuanganSekolah\obj\Debug\Keuangan.B95B2ABF.Up2Date
+C:\Project\Visual\keuangan sekolah_2\KeuanganSekolah\KeuanganSekolah\obj\Debug\KeuanganSekolah.FormAksiTransaksivb.resources
+C:\Project\Visual\keuangan sekolah_2\KeuanganSekolah\KeuanganSekolah\obj\Debug\KeuanganSekolah.FormManageUserForAdmin.resources

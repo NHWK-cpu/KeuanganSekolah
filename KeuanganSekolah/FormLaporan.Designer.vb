@@ -23,19 +23,21 @@ Partial Class FormLaporan
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.panelFilter = New System.Windows.Forms.Panel()
+        Me.btnTampilkan = New System.Windows.Forms.Button()
         Me.dtpSampaiTanggal = New System.Windows.Forms.DateTimePicker()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.dtmDariTanggal = New System.Windows.Forms.DateTimePicker()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.cmbJenisLaporan = New System.Windows.Forms.ComboBox()
+        Me.cmbJenisTransaksi = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.rvLaporan = New Microsoft.Reporting.WinForms.ReportViewer()
-        Me.btnTampilkan = New System.Windows.Forms.Button()
+        Me.ReportViewer1 = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.panelFilter.SuspendLayout()
         Me.SuspendLayout()
         '
         'panelFilter
         '
+        Me.panelFilter.AutoSize = True
         Me.panelFilter.BackColor = System.Drawing.Color.LightBlue
         Me.panelFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.panelFilter.Controls.Add(Me.btnTampilkan)
@@ -43,62 +45,80 @@ Partial Class FormLaporan
         Me.panelFilter.Controls.Add(Me.Label3)
         Me.panelFilter.Controls.Add(Me.dtmDariTanggal)
         Me.panelFilter.Controls.Add(Me.Label2)
-        Me.panelFilter.Controls.Add(Me.cmbJenisLaporan)
+        Me.panelFilter.Controls.Add(Me.cmbJenisTransaksi)
         Me.panelFilter.Controls.Add(Me.Label1)
         Me.panelFilter.Dock = System.Windows.Forms.DockStyle.Top
         Me.panelFilter.Location = New System.Drawing.Point(0, 0)
+        Me.panelFilter.Margin = New System.Windows.Forms.Padding(4)
         Me.panelFilter.Name = "panelFilter"
-        Me.panelFilter.Size = New System.Drawing.Size(800, 122)
+        Me.panelFilter.Padding = New System.Windows.Forms.Padding(0, 0, 0, 10)
+        Me.panelFilter.Size = New System.Drawing.Size(1067, 123)
         Me.panelFilter.TabIndex = 0
+        '
+        'btnTampilkan
+        '
+        Me.btnTampilkan.Location = New System.Drawing.Point(888, 79)
+        Me.btnTampilkan.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnTampilkan.Name = "btnTampilkan"
+        Me.btnTampilkan.Size = New System.Drawing.Size(131, 28)
+        Me.btnTampilkan.TabIndex = 6
+        Me.btnTampilkan.Text = "Tampilkan"
+        Me.btnTampilkan.UseVisualStyleBackColor = True
         '
         'dtpSampaiTanggal
         '
-        Me.dtpSampaiTanggal.Location = New System.Drawing.Point(419, 64)
+        Me.dtpSampaiTanggal.Location = New System.Drawing.Point(559, 79)
+        Me.dtpSampaiTanggal.Margin = New System.Windows.Forms.Padding(4)
         Me.dtpSampaiTanggal.Name = "dtpSampaiTanggal"
-        Me.dtpSampaiTanggal.Size = New System.Drawing.Size(200, 20)
+        Me.dtpSampaiTanggal.Size = New System.Drawing.Size(265, 22)
         Me.dtpSampaiTanggal.TabIndex = 5
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(310, 69)
+        Me.Label3.Location = New System.Drawing.Point(413, 85)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(87, 13)
+        Me.Label3.Size = New System.Drawing.Size(111, 16)
         Me.Label3.TabIndex = 4
         Me.Label3.Text = "Sampai Tanggal:"
         '
         'dtmDariTanggal
         '
-        Me.dtmDariTanggal.Location = New System.Drawing.Point(419, 24)
+        Me.dtmDariTanggal.Location = New System.Drawing.Point(559, 30)
+        Me.dtmDariTanggal.Margin = New System.Windows.Forms.Padding(4)
         Me.dtmDariTanggal.Name = "dtmDariTanggal"
-        Me.dtmDariTanggal.Size = New System.Drawing.Size(200, 20)
+        Me.dtmDariTanggal.Size = New System.Drawing.Size(265, 22)
         Me.dtmDariTanggal.TabIndex = 3
         '
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(310, 30)
+        Me.Label2.Location = New System.Drawing.Point(413, 37)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(71, 13)
+        Me.Label2.Size = New System.Drawing.Size(89, 16)
         Me.Label2.TabIndex = 2
         Me.Label2.Text = "Dari Tanggal:"
         '
-        'cmbJenisLaporan
+        'cmbJenisTransaksi
         '
-        Me.cmbJenisLaporan.FormattingEnabled = True
-        Me.cmbJenisLaporan.Location = New System.Drawing.Point(102, 46)
-        Me.cmbJenisLaporan.Name = "cmbJenisLaporan"
-        Me.cmbJenisLaporan.Size = New System.Drawing.Size(177, 21)
-        Me.cmbJenisLaporan.TabIndex = 1
+        Me.cmbJenisTransaksi.FormattingEnabled = True
+        Me.cmbJenisTransaksi.Location = New System.Drawing.Point(136, 57)
+        Me.cmbJenisTransaksi.Margin = New System.Windows.Forms.Padding(4)
+        Me.cmbJenisTransaksi.Name = "cmbJenisTransaksi"
+        Me.cmbJenisTransaksi.Size = New System.Drawing.Size(235, 24)
+        Me.cmbJenisTransaksi.TabIndex = 1
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(20, 49)
+        Me.Label1.Location = New System.Drawing.Point(27, 60)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(76, 13)
+        Me.Label1.Size = New System.Drawing.Size(105, 16)
         Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Jenis Laporan:"
+        Me.Label1.Text = "Jenis Transaksi:"
         '
         'rvLaporan
         '
@@ -109,33 +129,36 @@ Partial Class FormLaporan
         Me.rvLaporan.Size = New System.Drawing.Size(396, 246)
         Me.rvLaporan.TabIndex = 0
         '
-        'btnTampilkan
+        'ReportViewer1
         '
-        Me.btnTampilkan.Location = New System.Drawing.Point(666, 64)
-        Me.btnTampilkan.Name = "btnTampilkan"
-        Me.btnTampilkan.Size = New System.Drawing.Size(98, 23)
-        Me.btnTampilkan.TabIndex = 6
-        Me.btnTampilkan.Text = "Tampilkan"
-        Me.btnTampilkan.UseVisualStyleBackColor = True
+        Me.ReportViewer1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.ReportViewer1.Location = New System.Drawing.Point(0, 123)
+        Me.ReportViewer1.Name = "ReportViewer1"
+        Me.ReportViewer1.ServerReport.BearerToken = Nothing
+        Me.ReportViewer1.Size = New System.Drawing.Size(1067, 431)
+        Me.ReportViewer1.TabIndex = 7
         '
         'FormLaporan
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.LightCyan
-        Me.ClientSize = New System.Drawing.Size(800, 450)
+        Me.ClientSize = New System.Drawing.Size(1067, 554)
+        Me.Controls.Add(Me.ReportViewer1)
         Me.Controls.Add(Me.panelFilter)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "FormLaporan"
         Me.Text = "Laporan Keuangan"
         Me.panelFilter.ResumeLayout(False)
         Me.panelFilter.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
 
     Friend WithEvents panelFilter As Panel
-    Friend WithEvents cmbJenisLaporan As ComboBox
+    Friend WithEvents cmbJenisTransaksi As ComboBox
     Friend WithEvents Label1 As Label
     Friend WithEvents Label2 As Label
     Friend WithEvents Label3 As Label
@@ -143,4 +166,5 @@ Partial Class FormLaporan
     Friend WithEvents dtpSampaiTanggal As DateTimePicker
     Friend WithEvents rvLaporan As Microsoft.Reporting.WinForms.ReportViewer
     Friend WithEvents btnTampilkan As Button
+    Friend WithEvents ReportViewer1 As Microsoft.Reporting.WinForms.ReportViewer
 End Class

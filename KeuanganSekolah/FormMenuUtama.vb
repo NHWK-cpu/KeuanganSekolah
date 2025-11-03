@@ -1,30 +1,31 @@
 ﻿Public Class FormMenuUtama
     Public Property JabatanPengguna As String
     Private Sub FormMenuUtama_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        btnUser.Text = LoginSession.Username
         JabatanPengguna = LoginSession.UserRole.ToLower()
         If JabatanPengguna = "bendahara" Then
-            btnDataKelas.Visible = False
-            btnDataSiswa.Visible = False
-            btnManageUser.Visible = False
+            btnDataKelas.Enabled = False
+            btnDataSiswa.Enabled = False
+            btnPemasukanLainnya.Enabled = False
 
-            btnJnsPembayaran.Visible = True
-            btnTransaksiPembayaran.Visible = True
-            btnPengeluaran.Visible = True
+            btnJnsPembayaran.Enabled = True
+            btnTransaksiPembayaran.Enabled = True
+            btnPengeluaran.Enabled = True
         ElseIf JabatanPengguna = "kepsek" Then
-            btnTransaksiPembayaran.Visible = False
-            btnPengeluaran.Visible = False
-            btnManageUser.Visible = False
-            btnDataKelas.Visible = False
-            btnDataSiswa.Visible = False
+            btnTransaksiPembayaran.Enabled = False
+            btnPengeluaran.Enabled = False
+            btnPemasukanLainnya.Enabled = False
+            btnDataKelas.Enabled = False
+            btnDataSiswa.Enabled = False
 
-            btnJnsPembayaran.Visible = True
+            btnJnsPembayaran.Enabled = True
         ElseIf JabatanPengguna = "admin" Then
-            btnDataKelas.Visible = True
-            btnDataSiswa.Visible = True
-            btnJnsPembayaran.Visible = True
-            btnTransaksiPembayaran.Visible = True
-            btnPengeluaran.Visible = True
-            btnManageUser.Visible = True
+            btnDataKelas.Enabled = True
+            btnDataSiswa.Enabled = True
+            btnJnsPembayaran.Enabled = True
+            btnTransaksiPembayaran.Enabled = True
+            btnPengeluaran.Enabled = True
+            btnPemasukanLainnya.Enabled = True
         End If
 
     End Sub
@@ -79,5 +80,70 @@
         PanelMain.Controls.Clear() ' optional: hapus konten lama (mis. Label1)
         PanelMain.Controls.Add(fTransaksi)
         fTransaksi.Show()
+    End Sub
+
+    Private Sub btnPengeluaran_Click(sender As Object, e As EventArgs) Handles btnPengeluaran.Click
+        Dim fPengeluaran As New FormPengeluaran()
+
+        ' Tampilkan form di dalam PanelMain (PanelMain mengisi client area sehingga MDI child tidak terlihat)
+        fPengeluaran.TopLevel = False
+        fPengeluaran.FormBorderStyle = FormBorderStyle.None
+        fPengeluaran.Dock = DockStyle.Fill
+
+        PanelMain.Controls.Clear() ' optional: hapus konten lama (mis. Label1)
+        PanelMain.Controls.Add(fPengeluaran)
+        fPengeluaran.Show()
+    End Sub
+
+    Private Sub btnLaporan_Click(sender As Object, e As EventArgs) Handles btnLaporan.Click
+        Dim fLaporan As New FormLaporan()
+
+        ' Tampilkan form di dalam PanelMain (PanelMain mengisi client area sehingga MDI child tidak terlihat)
+        fLaporan.TopLevel = False
+        fLaporan.FormBorderStyle = FormBorderStyle.None
+        fLaporan.Dock = DockStyle.Fill
+
+        PanelMain.Controls.Clear() ' optional: hapus konten lama (mis. Label1)
+        PanelMain.Controls.Add(fLaporan)
+        fLaporan.Show()
+    End Sub
+
+    Private Sub btnManageUser_Click(sender As Object, e As EventArgs) Handles btnManageUser.Click
+        Dim fManageUsers As New FormManageUserForAdmin()
+
+        ' Tampilkan form di dalam PanelMain (PanelMain mengisi client area sehingga MDI child tidak terlihat)
+        fManageUsers.TopLevel = False
+        fManageUsers.FormBorderStyle = FormBorderStyle.None
+        fManageUsers.Dock = DockStyle.Fill
+
+        PanelMain.Controls.Clear() ' optional: hapus konten lama (mis. Label1)
+        PanelMain.Controls.Add(fManageUsers)
+        fManageUsers.Show()
+    End Sub
+
+    Private Sub btnPemasukanLainnya_Click(sender As Object, e As EventArgs) Handles btnPemasukanLainnya.Click
+        Dim fPemasukanLainnya As New FormPemasukanLainnya()
+
+        ' Tampilkan form di dalam PanelMain (PanelMain mengisi client area sehingga MDI child tidak terlihat)
+        fPemasukanLainnya.TopLevel = False
+        fPemasukanLainnya.FormBorderStyle = FormBorderStyle.None
+        fPemasukanLainnya.Dock = DockStyle.Fill
+
+        PanelMain.Controls.Clear() ' optional: hapus konten lama (mis. Label1)
+        PanelMain.Controls.Add(fPemasukanLainnya)
+        fPemasukanLainnya.Show()
+    End Sub
+
+    Private Sub btnUser_Click(sender As Object, e As EventArgs) Handles btnUser.Click, PictureBox1.Click
+        Dim fProfile As New FormProfile()
+
+        ' Tampilkan form di dalam PanelMain (PanelMain mengisi client area sehingga MDI child tidak terlihat)
+        fProfile.TopLevel = False
+        fProfile.FormBorderStyle = FormBorderStyle.None
+        fProfile.Dock = DockStyle.Fill
+
+        PanelMain.Controls.Clear() ' optional: hapus konten lama (mis. Label1)
+        PanelMain.Controls.Add(fProfile)
+        fProfile.Show()
     End Sub
 End Class
