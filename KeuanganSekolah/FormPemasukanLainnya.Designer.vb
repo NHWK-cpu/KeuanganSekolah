@@ -36,10 +36,10 @@ Partial Class FormPemasukanLainnya
         Me.numJumlah = New System.Windows.Forms.NumericUpDown()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.dgvPemasukanLainnya = New System.Windows.Forms.DataGridView()
-        Me.DataGridViewImageColumn1 = New System.Windows.Forms.DataGridViewImageColumn()
-        Me.DataGridViewImageColumn2 = New System.Windows.Forms.DataGridViewImageColumn()
         Me.edit = New System.Windows.Forms.DataGridViewImageColumn()
         Me.hapus = New System.Windows.Forms.DataGridViewImageColumn()
+        Me.DataGridViewImageColumn1 = New System.Windows.Forms.DataGridViewImageColumn()
+        Me.DataGridViewImageColumn2 = New System.Windows.Forms.DataGridViewImageColumn()
         Me.gbPemasukanLainnya.SuspendLayout()
         CType(Me.numJumlah, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dgvPemasukanLainnya, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -90,6 +90,7 @@ Partial Class FormPemasukanLainnya
         'btnBatal
         '
         Me.btnBatal.BackColor = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.btnBatal.Enabled = False
         Me.btnBatal.Location = New System.Drawing.Point(882, 113)
         Me.btnBatal.Margin = New System.Windows.Forms.Padding(4)
         Me.btnBatal.Name = "btnBatal"
@@ -101,6 +102,7 @@ Partial Class FormPemasukanLainnya
         'btnHapus
         '
         Me.btnHapus.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.btnHapus.Enabled = False
         Me.btnHapus.Location = New System.Drawing.Point(756, 113)
         Me.btnHapus.Margin = New System.Windows.Forms.Padding(4)
         Me.btnHapus.Name = "btnHapus"
@@ -120,6 +122,7 @@ Partial Class FormPemasukanLainnya
         'btnEdit
         '
         Me.btnEdit.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer))
+        Me.btnEdit.Enabled = False
         Me.btnEdit.Location = New System.Drawing.Point(632, 113)
         Me.btnEdit.Margin = New System.Windows.Forms.Padding(4)
         Me.btnEdit.Name = "btnEdit"
@@ -199,30 +202,9 @@ Partial Class FormPemasukanLainnya
         Me.dgvPemasukanLainnya.Name = "dgvPemasukanLainnya"
         Me.dgvPemasukanLainnya.ReadOnly = True
         Me.dgvPemasukanLainnya.RowHeadersWidth = 51
+        Me.dgvPemasukanLainnya.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvPemasukanLainnya.Size = New System.Drawing.Size(1067, 346)
         Me.dgvPemasukanLainnya.TabIndex = 3
-        '
-        'DataGridViewImageColumn1
-        '
-        Me.DataGridViewImageColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.DataGridViewImageColumn1.HeaderText = "Edit"
-        Me.DataGridViewImageColumn1.Image = Global.KeuanganSekolah.My.Resources.Resources.edit_square_50dp_F19E39_FILL0_wght400_GRAD0_opsz48
-        Me.DataGridViewImageColumn1.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom
-        Me.DataGridViewImageColumn1.MinimumWidth = 6
-        Me.DataGridViewImageColumn1.Name = "DataGridViewImageColumn1"
-        Me.DataGridViewImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridViewImageColumn1.Width = 50
-        '
-        'DataGridViewImageColumn2
-        '
-        Me.DataGridViewImageColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
-        Me.DataGridViewImageColumn2.HeaderText = "Hapus"
-        Me.DataGridViewImageColumn2.Image = Global.KeuanganSekolah.My.Resources.Resources.delete_forever_50dp_EA3323_FILL1_wght400_GRAD0_opsz48
-        Me.DataGridViewImageColumn2.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom
-        Me.DataGridViewImageColumn2.MinimumWidth = 6
-        Me.DataGridViewImageColumn2.Name = "DataGridViewImageColumn2"
-        Me.DataGridViewImageColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridViewImageColumn2.Width = 50
         '
         'edit
         '
@@ -247,6 +229,28 @@ Partial Class FormPemasukanLainnya
         Me.hapus.ReadOnly = True
         Me.hapus.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.hapus.Width = 50
+        '
+        'DataGridViewImageColumn1
+        '
+        Me.DataGridViewImageColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.DataGridViewImageColumn1.HeaderText = "Edit"
+        Me.DataGridViewImageColumn1.Image = Global.KeuanganSekolah.My.Resources.Resources.edit_square_50dp_F19E39_FILL0_wght400_GRAD0_opsz48
+        Me.DataGridViewImageColumn1.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom
+        Me.DataGridViewImageColumn1.MinimumWidth = 6
+        Me.DataGridViewImageColumn1.Name = "DataGridViewImageColumn1"
+        Me.DataGridViewImageColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridViewImageColumn1.Width = 50
+        '
+        'DataGridViewImageColumn2
+        '
+        Me.DataGridViewImageColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None
+        Me.DataGridViewImageColumn2.HeaderText = "Hapus"
+        Me.DataGridViewImageColumn2.Image = Global.KeuanganSekolah.My.Resources.Resources.delete_forever_50dp_EA3323_FILL1_wght400_GRAD0_opsz48
+        Me.DataGridViewImageColumn2.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom
+        Me.DataGridViewImageColumn2.MinimumWidth = 6
+        Me.DataGridViewImageColumn2.Name = "DataGridViewImageColumn2"
+        Me.DataGridViewImageColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridViewImageColumn2.Width = 50
         '
         'FormPemasukanLainnya
         '

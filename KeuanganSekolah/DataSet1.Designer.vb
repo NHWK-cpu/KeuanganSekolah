@@ -297,6 +297,8 @@ Partial Public Class DataSet1
         
         Private columnkode_tagihan As Global.System.Data.DataColumn
         
+        Private columntanggal_transaksi_string As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub New()
@@ -389,6 +391,14 @@ Partial Public Class DataSet1
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property tanggal_transaksi_stringColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columntanggal_transaksi_string
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -425,9 +435,9 @@ Partial Public Class DataSet1
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Overloads Function AddtransaksiRow(ByVal kode_transaksi As String, ByVal nominal As String, ByVal jenis_transaksi As String, ByVal keterangan As String, ByVal _operator As String, ByVal tanggal_transaksi As String, ByVal kode_tagihan As String) As transaksiRow
+        Public Overloads Function AddtransaksiRow(ByVal kode_transaksi As String, ByVal nominal As String, ByVal jenis_transaksi As String, ByVal keterangan As String, ByVal _operator As String, ByVal tanggal_transaksi As String, ByVal kode_tagihan As String, ByVal tanggal_transaksi_string As String) As transaksiRow
             Dim rowtransaksiRow As transaksiRow = CType(Me.NewRow,transaksiRow)
-            Dim columnValuesArray() As Object = New Object() {kode_transaksi, nominal, jenis_transaksi, keterangan, _operator, tanggal_transaksi, kode_tagihan}
+            Dim columnValuesArray() As Object = New Object() {kode_transaksi, nominal, jenis_transaksi, keterangan, _operator, tanggal_transaksi, kode_tagihan, tanggal_transaksi_string}
             rowtransaksiRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowtransaksiRow)
             Return rowtransaksiRow
@@ -457,6 +467,7 @@ Partial Public Class DataSet1
             Me.columnoperator = MyBase.Columns("operator")
             Me.columntanggal_transaksi = MyBase.Columns("tanggal_transaksi")
             Me.columnkode_tagihan = MyBase.Columns("kode_tagihan")
+            Me.columntanggal_transaksi_string = MyBase.Columns("tanggal_transaksi_string")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -479,6 +490,8 @@ Partial Public Class DataSet1
             MyBase.Columns.Add(Me.columntanggal_transaksi)
             Me.columnkode_tagihan = New Global.System.Data.DataColumn("kode_tagihan", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnkode_tagihan)
+            Me.columntanggal_transaksi_string = New Global.System.Data.DataColumn("tanggal_transaksi_string", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columntanggal_transaksi_string)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -730,6 +743,21 @@ Partial Public Class DataSet1
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property tanggal_transaksi_string() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tabletransaksi.tanggal_transaksi_stringColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'tanggal_transaksi_string' in table 'transaksi' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tabletransaksi.tanggal_transaksi_stringColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Function Iskode_transaksiNull() As Boolean
             Return Me.IsNull(Me.tabletransaksi.kode_transaksiColumn)
         End Function
@@ -810,6 +838,18 @@ Partial Public Class DataSet1
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub Setkode_tagihanNull()
             Me(Me.tabletransaksi.kode_tagihanColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function Istanggal_transaksi_stringNull() As Boolean
+            Return Me.IsNull(Me.tabletransaksi.tanggal_transaksi_stringColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub Settanggal_transaksi_stringNull()
+            Me(Me.tabletransaksi.tanggal_transaksi_stringColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

@@ -1,13 +1,15 @@
 ﻿Public Class FormMenuUtama
     Public Property JabatanPengguna As String
     Private Sub FormMenuUtama_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        btnUser.Text = LoginSession.Username
+        Username1ToolStripMenuItem.Text = LoginSession.Username
         JabatanPengguna = LoginSession.UserRole.ToLower()
+        Label1.Parent = PictureBox3
         If JabatanPengguna = "bendahara" Then
             btnDataKelas.Enabled = False
             btnDataSiswa.Enabled = False
-            btnPemasukanLainnya.Enabled = False
+            btnPemasukanLainnya.Enabled = True
 
+            btnManageUser.Enabled = False
             btnJnsPembayaran.Enabled = True
             btnTransaksiPembayaran.Enabled = True
             btnPengeluaran.Enabled = True
@@ -17,8 +19,9 @@
             btnPemasukanLainnya.Enabled = False
             btnDataKelas.Enabled = False
             btnDataSiswa.Enabled = False
+            btnJnsPembayaran.Enabled = False
 
-            btnJnsPembayaran.Enabled = True
+            btnManageUser.Enabled = True
         ElseIf JabatanPengguna = "admin" Then
             btnDataKelas.Enabled = True
             btnDataSiswa.Enabled = True
@@ -134,7 +137,7 @@
         fPemasukanLainnya.Show()
     End Sub
 
-    Private Sub btnUser_Click(sender As Object, e As EventArgs) Handles btnUser.Click, PictureBox1.Click
+    Private Sub UbahPasswordToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles UbahPasswordToolStripMenuItem.Click
         Dim fProfile As New FormProfile()
 
         ' Tampilkan form di dalam PanelMain (PanelMain mengisi client area sehingga MDI child tidak terlihat)
@@ -145,5 +148,13 @@
         PanelMain.Controls.Clear() ' optional: hapus konten lama (mis. Label1)
         PanelMain.Controls.Add(fProfile)
         fProfile.Show()
+    End Sub
+
+    Private Sub LogoutToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles LogoutToolStripMenuItem.Click
+        Me.Hide()
+        LoginSession.Username = ""
+        LoginSession.UserID = ""
+        LoginSession.UserRole = ""
+        FormLogin.Show()
     End Sub
 End Class

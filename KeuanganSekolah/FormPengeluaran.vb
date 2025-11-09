@@ -52,7 +52,9 @@
         End Try
 
         ' Reset Field dan button
+        btnBatal.Enabled = True
         btnBatal.PerformClick()
+        btnBatal.Enabled = False
 
         ' Reload DataGridView
         LoadData()
@@ -67,7 +69,7 @@
         ' Validasi Aksi yang ditekan
         Dim selectedRow As DataGridViewRow = dgvPengeluaran.Rows(e.RowIndex)
         If dgvPengeluaran.Columns(e.ColumnIndex).Name = "edit" Then
-            dtpTanggal.Text = selectedRow.Cells("kode_transaksi").Value.ToString()
+            dtpTanggal.Text = selectedRow.Cells("tanggal_transaksi").Value.ToString()
             txtKeterangan.Text = selectedRow.Cells("keterangan").Value.ToString()
             numJumlah.Value = selectedRow.Cells("nominal").Value.ToString()
 
@@ -120,7 +122,7 @@
                     cmd.Parameters.AddWithValue("@keterangan", txtKeterangan.Text)
                     cmd.Parameters.AddWithValue("@operator", LoginSession.Username)
                     cmd.Parameters.AddWithValue("@tanggal_transaksi", dtpTanggal.Value)
-                    cmd.Parameters.AddWithValue("@kode_transaksi", dgvPengeluaran.CurrentRow.Cells("kode_transaksi"))
+                    cmd.Parameters.AddWithValue("@kode_transaksi", dgvPengeluaran.CurrentRow.Cells("kode_transaksi").Value.ToString())
 
                     conn.Open()
                     Dim rowsAffected = cmd.ExecuteNonQuery()
@@ -143,17 +145,17 @@
 
     Private Sub btnHapus_Click(sender As Object, e As EventArgs) Handles btnHapus.Click
         ' Konfirmasi penghapusan
-        Dim result As DialogResult = MessageBox.Show("Apakah Anda yakin ingin menghapus transaksi ini?", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning)
-        If result = DialogResult.No Then
-            Return
-        End If
+        'Dim result As DialogResult = MessageBox.Show("Apakah Anda yakin ingin menghapus transaksi ini?", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning)
+        'If result = DialogResult.No Then
+        '    Return
+        'End If
 
         ' Hapus data dari database
         Try
-            Dim sql As String = "DROP FROM transaksi WHERE kode_transaksi = @kode_transaksi"
+            Dim sql As String = "DELETE FROM transaksi WHERE kode_transaksi = @kode_transaksi"
             Using conn = DatabaseConnector.GetConnection()
                 Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("@kode_transaksi", dgvPengeluaran.CurrentRow.Cells("kode_transaksi"))
+                    cmd.Parameters.AddWithValue("@kode_transaksi", dgvPengeluaran.CurrentRow.Cells("kode_transaksi").Value.ToString())
                     conn.Open()
                     cmd.ExecuteNonQuery()
                 End Using
@@ -161,11 +163,18 @@
         Catch ex As Exception
             MessageBox.Show("Gagal menghapus data: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+
+        LoadData()
     End Sub
 
     Private Sub txtCari_TextChanged(sender As Object, e As EventArgs) Handles txtCari.TextChanged
         Try
-            Dim sql = "SELECT kode_transaksi, nominal, keterangan, operator, tanggal_transaksi FROM transaksi WHERE jenis_transaksi = 'keluar' AND (keterangan LIKE @search OR operator LIKE @search)"
+            Dim sql
+            If String.IsNullOrWhiteSpace(txtCari.Text) Then
+                sql = "SELECT kode_transaksi, nominal, keterangan, operator, tanggal_transaksi FROM transaksi WHERE jenis_transaksi = 'keluar'"
+            Else
+                sql = "SELECT kode_transaksi, nominal, keterangan, operator, tanggal_transaksi FROM transaksi WHERE jenis_transaksi = 'keluar' AND (keterangan LIKE @search OR operator LIKE @search)"
+            End If
             Using conn = DatabaseConnector.GetConnection()
                 Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sql, conn)
                     cmd.Parameters.AddWithValue("@search", "%" & txtCari.Text & "%")

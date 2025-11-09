@@ -112,7 +112,7 @@
 
         ' Hapus data dari database
         Try
-            Dim sql As String = "DROP FROM user WHERE id = @id"
+            Dim sql As String = "DELETE FROM user WHERE id = @id"
             Using conn = DatabaseConnector.GetConnection()
                 Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sql, conn)
                     cmd.Parameters.AddWithValue("@id", dgvUsersData.CurrentRow.Cells("id"))

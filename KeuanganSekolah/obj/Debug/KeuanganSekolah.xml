@@ -37,6 +37,11 @@ KeuanganSekolah
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:KeuanganSekolah.My.Resources.Resources.Screenshot_2025_11_04_212225">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="T:KeuanganSekolah.DataSet1">
 <summary>
 Represents a strongly typed in-memory cache of data.

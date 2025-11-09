@@ -23,10 +23,8 @@ Partial Class FormMenuUtama
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(FormMenuUtama))
-        Me.btnLogout = New System.Windows.Forms.Button()
         Me.PanelMain = New System.Windows.Forms.Panel()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.PictureBox10 = New System.Windows.Forms.PictureBox()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
         Me.PanelSideBar = New System.Windows.Forms.Panel()
         Me.PictureBox8 = New System.Windows.Forms.PictureBox()
@@ -39,16 +37,17 @@ Partial Class FormMenuUtama
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.PictureBox4 = New System.Windows.Forms.PictureBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         Me.btnPemasukanLainnya = New System.Windows.Forms.Button()
         Me.btnLaporan = New System.Windows.Forms.Button()
         Me.btnPengeluaran = New System.Windows.Forms.Button()
         Me.btnTransaksiPembayaran = New System.Windows.Forms.Button()
         Me.btnJnsPembayaran = New System.Windows.Forms.Button()
         Me.btnDataKelas = New System.Windows.Forms.Button()
-        Me.btnUser = New System.Windows.Forms.Button()
+        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
+        Me.Username1ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UbahPasswordToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.LogoutToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.PanelMain.SuspendLayout()
-        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelSideBar.SuspendLayout()
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -59,28 +58,13 @@ Partial Class FormMenuUtama
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
-        '
-        'btnLogout
-        '
-        Me.btnLogout.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnLogout.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.btnLogout.Location = New System.Drawing.Point(631, 0)
-        Me.btnLogout.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnLogout.Name = "btnLogout"
-        Me.btnLogout.Padding = New System.Windows.Forms.Padding(40, 0, 0, 0)
-        Me.btnLogout.Size = New System.Drawing.Size(116, 39)
-        Me.btnLogout.TabIndex = 7
-        Me.btnLogout.Text = "Logout"
-        Me.btnLogout.UseVisualStyleBackColor = True
         '
         'PanelMain
         '
         Me.PanelMain.BackColor = System.Drawing.Color.LightCyan
-        Me.PanelMain.Controls.Add(Me.PictureBox10)
         Me.PanelMain.Controls.Add(Me.Label1)
-        Me.PanelMain.Controls.Add(Me.btnLogout)
         Me.PanelMain.Controls.Add(Me.PictureBox3)
         Me.PanelMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PanelMain.Location = New System.Drawing.Point(320, 0)
@@ -94,30 +78,22 @@ Partial Class FormMenuUtama
         Me.Label1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label1.AutoSize = True
+        Me.Label1.BackColor = System.Drawing.Color.Transparent
         Me.Label1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.ForeColor = System.Drawing.Color.LightSeaGreen
-        Me.Label1.Location = New System.Drawing.Point(288, 105)
+        Me.Label1.Location = New System.Drawing.Point(280, 94)
         Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(203, 25)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "Selamat Datang! ^-^"
-        Me.Label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'PictureBox10
-        '
-        Me.PictureBox10.Image = CType(resources.GetObject("PictureBox10.Image"), System.Drawing.Image)
-        Me.PictureBox10.Location = New System.Drawing.Point(648, 4)
-        Me.PictureBox10.Margin = New System.Windows.Forms.Padding(4)
-        Me.PictureBox10.Name = "PictureBox10"
-        Me.PictureBox10.Size = New System.Drawing.Size(24, 31)
-        Me.PictureBox10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PictureBox10.TabIndex = 28
-        Me.PictureBox10.TabStop = False
+        Me.Label1.TextAlign = System.Drawing.ContentAlignment.TopCenter
         '
         'PictureBox3
         '
+        Me.PictureBox3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.PictureBox3.Image = CType(resources.GetObject("PictureBox3.Image"), System.Drawing.Image)
         Me.PictureBox3.Location = New System.Drawing.Point(8, 28)
         Me.PictureBox3.Margin = New System.Windows.Forms.Padding(4)
@@ -142,14 +118,13 @@ Partial Class FormMenuUtama
         Me.PanelSideBar.Controls.Add(Me.PictureBox5)
         Me.PanelSideBar.Controls.Add(Me.PictureBox4)
         Me.PanelSideBar.Controls.Add(Me.PictureBox2)
-        Me.PanelSideBar.Controls.Add(Me.PictureBox1)
         Me.PanelSideBar.Controls.Add(Me.btnPemasukanLainnya)
         Me.PanelSideBar.Controls.Add(Me.btnLaporan)
         Me.PanelSideBar.Controls.Add(Me.btnPengeluaran)
         Me.PanelSideBar.Controls.Add(Me.btnTransaksiPembayaran)
         Me.PanelSideBar.Controls.Add(Me.btnJnsPembayaran)
         Me.PanelSideBar.Controls.Add(Me.btnDataKelas)
-        Me.PanelSideBar.Controls.Add(Me.btnUser)
+        Me.PanelSideBar.Controls.Add(Me.MenuStrip1)
         Me.PanelSideBar.Dock = System.Windows.Forms.DockStyle.Left
         Me.PanelSideBar.Location = New System.Drawing.Point(0, 0)
         Me.PanelSideBar.Margin = New System.Windows.Forms.Padding(4)
@@ -276,17 +251,6 @@ Partial Class FormMenuUtama
         Me.PictureBox2.TabIndex = 21
         Me.PictureBox2.TabStop = False
         '
-        'PictureBox1
-        '
-        Me.PictureBox1.Image = CType(resources.GetObject("PictureBox1.Image"), System.Drawing.Image)
-        Me.PictureBox1.Location = New System.Drawing.Point(261, 14)
-        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(4)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(37, 28)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PictureBox1.TabIndex = 20
-        Me.PictureBox1.TabStop = False
-        '
         'btnPemasukanLainnya
         '
         Me.btnPemasukanLainnya.FlatStyle = System.Windows.Forms.FlatStyle.Flat
@@ -373,20 +337,40 @@ Partial Class FormMenuUtama
         Me.btnDataKelas.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         Me.btnDataKelas.UseVisualStyleBackColor = True
         '
-        'btnUser
+        'MenuStrip1
         '
-        Me.btnUser.BackColor = System.Drawing.Color.Transparent
-        Me.btnUser.FlatAppearance.BorderSize = 0
-        Me.btnUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnUser.ForeColor = System.Drawing.SystemColors.ActiveCaptionText
-        Me.btnUser.Location = New System.Drawing.Point(13, 14)
-        Me.btnUser.Margin = New System.Windows.Forms.Padding(4)
-        Me.btnUser.Name = "btnUser"
-        Me.btnUser.Size = New System.Drawing.Size(249, 28)
-        Me.btnUser.TabIndex = 32
-        Me.btnUser.Text = "Username1"
-        Me.btnUser.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.btnUser.UseVisualStyleBackColor = False
+        Me.MenuStrip1.BackColor = System.Drawing.Color.Transparent
+        Me.MenuStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Username1ToolStripMenuItem})
+        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
+        Me.MenuStrip1.Name = "MenuStrip1"
+        Me.MenuStrip1.Padding = New System.Windows.Forms.Padding(8, 13, 0, 2)
+        Me.MenuStrip1.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.MenuStrip1.Size = New System.Drawing.Size(320, 39)
+        Me.MenuStrip1.TabIndex = 33
+        Me.MenuStrip1.Text = "MenuStrip1"
+        '
+        'Username1ToolStripMenuItem
+        '
+        Me.Username1ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.UbahPasswordToolStripMenuItem, Me.LogoutToolStripMenuItem})
+        Me.Username1ToolStripMenuItem.Image = CType(resources.GetObject("Username1ToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.Username1ToolStripMenuItem.Name = "Username1ToolStripMenuItem"
+        Me.Username1ToolStripMenuItem.Size = New System.Drawing.Size(117, 24)
+        Me.Username1ToolStripMenuItem.Text = "Username1"
+        '
+        'UbahPasswordToolStripMenuItem
+        '
+        Me.UbahPasswordToolStripMenuItem.Image = CType(resources.GetObject("UbahPasswordToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.UbahPasswordToolStripMenuItem.Name = "UbahPasswordToolStripMenuItem"
+        Me.UbahPasswordToolStripMenuItem.Size = New System.Drawing.Size(192, 26)
+        Me.UbahPasswordToolStripMenuItem.Text = "Ubah Password"
+        '
+        'LogoutToolStripMenuItem
+        '
+        Me.LogoutToolStripMenuItem.Image = CType(resources.GetObject("LogoutToolStripMenuItem.Image"), System.Drawing.Image)
+        Me.LogoutToolStripMenuItem.Name = "LogoutToolStripMenuItem"
+        Me.LogoutToolStripMenuItem.Size = New System.Drawing.Size(192, 26)
+        Me.LogoutToolStripMenuItem.Text = "Logout"
         '
         'FormMenuUtama
         '
@@ -396,16 +380,16 @@ Partial Class FormMenuUtama
         Me.Controls.Add(Me.PanelMain)
         Me.Controls.Add(Me.PanelSideBar)
         Me.IsMdiContainer = True
+        Me.MainMenuStrip = Me.MenuStrip1
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "FormMenuUtama"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "FormMenuUtama"
         Me.WindowState = System.Windows.Forms.FormWindowState.Maximized
         Me.PanelMain.ResumeLayout(False)
-        Me.PanelMain.PerformLayout()
-        CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         Me.PanelSideBar.ResumeLayout(False)
+        Me.PanelSideBar.PerformLayout()
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox11, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).EndInit()
@@ -414,7 +398,8 @@ Partial Class FormMenuUtama
         CType(Me.PictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.MenuStrip1.ResumeLayout(False)
+        Me.MenuStrip1.PerformLayout()
         Me.ResumeLayout(False)
 
     End Sub
@@ -426,21 +411,21 @@ Partial Class FormMenuUtama
     Friend WithEvents btnTransaksiPembayaran As Button
     Friend WithEvents btnJnsPembayaran As Button
     Friend WithEvents btnDataKelas As Button
-    Friend WithEvents btnLogout As Button
     Friend WithEvents PanelMain As Panel
     Friend WithEvents Label1 As Label
     Friend WithEvents btnPemasukanLainnya As Button
     Friend WithEvents PictureBox3 As PictureBox
     Friend WithEvents PictureBox2 As PictureBox
-    Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents PictureBox8 As PictureBox
     Friend WithEvents PictureBox7 As PictureBox
     Friend WithEvents PictureBox6 As PictureBox
     Friend WithEvents PictureBox5 As PictureBox
     Friend WithEvents PictureBox4 As PictureBox
     Friend WithEvents PictureBox9 As PictureBox
-    Friend WithEvents PictureBox10 As PictureBox
     Friend WithEvents PictureBox11 As PictureBox
     Friend WithEvents btnManageUser As Button
-    Friend WithEvents btnUser As Button
+    Friend WithEvents MenuStrip1 As MenuStrip
+    Friend WithEvents Username1ToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents UbahPasswordToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents LogoutToolStripMenuItem As ToolStripMenuItem
 End Class

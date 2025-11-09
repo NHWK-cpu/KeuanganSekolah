@@ -18,6 +18,8 @@ Public Class FormLogin
                             LoginSession.UserRole = rdr("jabatan").ToString()
                             Me.Hide()
                             FormMenuUtama.Show()
+                        Else
+                            MessageBox.Show("Password or username salah!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                         End If
                     End Using
                 End Using

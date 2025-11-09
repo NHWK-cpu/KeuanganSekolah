@@ -199,6 +199,7 @@ Partial Class FormPengeluaran
         Me.dgvPengeluaran.Name = "dgvPengeluaran"
         Me.dgvPengeluaran.ReadOnly = True
         Me.dgvPengeluaran.RowHeadersWidth = 51
+        Me.dgvPengeluaran.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.dgvPengeluaran.Size = New System.Drawing.Size(1067, 332)
         Me.dgvPengeluaran.TabIndex = 1
         '

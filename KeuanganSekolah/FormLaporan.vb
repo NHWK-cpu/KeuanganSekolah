@@ -4,14 +4,6 @@ Imports MySql.Data.MySqlClient
 
 Public Class FormLaporan
 
-    Private Sub cmbJenisLaporan_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbJenisTransaksi.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub dtmDariTanggal_ValueChanged(sender As Object, e As EventArgs) Handles dtmDariTanggal.ValueChanged
-
-    End Sub
-
     Private Sub FormLaporan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Me.ReportViewer1.RefreshReport()
@@ -43,8 +35,18 @@ Public Class FormLaporan
 
         End Using
 
+        ' Menambahkan kolom baru bertipe string jika belum ada
+        If Not dt.Columns.Contains("tanggal_transaksi_string") Then
+            dt.Columns.Add("tanggal_transaksi_string", GetType(String))
+        End If
+
         For Each row As DataRow In dt.Rows
-            MsgBox(row("tanggal_transaksi"))
+            Dim mysqlDate As MySql.Data.Types.MySqlDateTime = CType(row("tanggal_transaksi"), MySql.Data.Types.MySqlDateTime)
+            row("tanggal_transaksi_string") = mysqlDate.GetDateTime().ToString("yyyy-MM-dd HH:mm:ss")
+        Next
+
+        For Each row As DataRow In dt.Rows
+            MsgBox(row("tanggal_transaksi_string"))
         Next
 
         '' Tambah kolom baru untuk string tanggal

@@ -405,7 +405,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!tanggal_transaksi.Value</Value>
+                              <Value>=Fields!tanggal_transaksi_string.Value</Value>
                               <Style />
                             </TextRun>
                           </TextRuns>
@@ -484,7 +484,7 @@
         <DataSetName>DataSetTransaksi</DataSetName>
         <Top>0.17639cm</Top>
         <Height>1.2cm</Height>
-        <Width>24.49216cm</Width>
+        <Width>24.49215cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -597,6 +597,10 @@
         </Field>
         <Field Name="kode_tagihan">
           <DataField>kode_tagihan</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="tanggal_transaksi_string">
+          <DataField>tanggal_transaksi_string</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

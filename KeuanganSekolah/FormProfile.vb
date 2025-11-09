@@ -38,7 +38,7 @@
         Try
             Using conn = DatabaseConnector.GetConnection()
                 Using cmd = New MySql.Data.MySqlClient.MySqlCommand(sql, conn)
-                    cmd.Parameters.AddWithValue("@password", txtPwBaru)
+                    cmd.Parameters.AddWithValue("@password", txtPwBaru.Text)
                     cmd.Parameters.AddWithValue("@username", txtUsername.Text)
                     cmd.Parameters.AddWithValue("@jabatan", txtPeran.Text)
 
